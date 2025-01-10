@@ -1,0 +1,382 @@
+Spring Core 
+============
+
+=> It is all about managing dependencies among the classes with loosely coupling .
+
+=> In project we will develop several classes . All those classes can be categorize into 3 types .
+
+======================================
+1. POJO class (Plane Old java Object)
+======================================
+
+	What is pojo ? 
+	> Any java class which can be compiled using JDK is called POJO class.
+	> 
+
+ex - POJO classes  
+	
+class Demo1 {
+		int id;
+		String name;
+	}
+
+
+class Demo2 extends Thread {
+		int id;
+		String name;
+	}
+
+class Demo2 extends Runnable {
+		//run method
+
+		int id;
+		String name;
+	}
+
+
+==============================
+What is java Bean ?
+==============================
+
+=> Any java class which follows bean specificaion rules is called as java Bean .
+
+1. Class Should implement serializable interface .
+2. Class Should have private data members .
+3. Every private variable should have public setter & public getter method . 
+4. Class should have zero-param constructor .
+	
+Note : Bean classes are used to write business logic and to store and retrieve data .
+
+
+=======================
+what is component ?
+=======================
+
+=>The java class which contains business logic is called as component class .
+
+	ex . Controllers, Service, Dao classes  
+
+=============================================================================
+
+In java one class can tak to another class in 2 ways 
+1. Inheritance ( IS - A )
+2. Composition ( HAS - A)
+
+
+To deal with the problem of tight coupling we have to use the interface .
+
+==================================
+What is Dependency Injection ? 
+===================================
+
+List l = new ArrayList(); //valid
+
+List l = new LinkedList(); //valid
+
+List l = newVector(); // valid
+
+IEngine eng = new DeiselEngine(); // valid
+
+IEngine eng = new PetrolEngine(); // valid
+
+
+The process of injecting one class object into another class is called dependecy injection .
+
+1. Setter Injection
+======================
+
+=> It is Injecting dependent object into target object using target class setter method .
+
+package in.learn;
+
+public class Car 
+{
+	private IEngine eng;
+	
+	public void setEng(IEngine eng) {
+		this.eng = eng;
+	}
+	
+	public void drive() {
+		int start = eng.start();
+		
+		if(start >= 1) {
+			System.out.println("Journey started ");
+		} else {
+			System.out.println("Engine is in trouble ");
+		}
+	}
+}
+
+
+2. Constructor Injecton
+=======================
+
+=> It means injecting dependent object into target class object with target class constructor .  
+
+package in.learn;
+
+public class Car 
+{
+	private IEngine eng;
+	
+	public Car(IEngine eng) {
+		this.eng = eng;
+	}
+	
+	public void drive() {
+		int start = eng.start();
+		
+		if(start >= 1) {
+			System.out.println("Journey started ");
+		} else {
+			System.out.println("Engine is in trouble ");
+		}
+	}
+}
+
+Car is dependent on engine 
+
+3. Field Injection
+===================
+
+FI injecting dependent class object into target class object using target class variable is called as Field injection . 
+
+
+package in.learn;
+
+public class Car 
+{
+	private IEngine eng;
+	
+	public void drive() {
+		int start = eng.start();
+		
+		if(start >= 1) {
+			System.out.println("Journey started ");
+		} else {
+			System.out.println("Engine is in trouble ");
+		}
+	}
+}
+
+
+
+package in.learn;
+
+import java.lang.reflect.Field;
+
+public class Main {
+	public static void main(String[] args) throws Exception {
+		
+		 Class<?> clz = Class.forName("in.learn.Car");
+		
+		 Field engField = clz.getDeclaredField("eng");
+		 
+		 engField.setAccessible(true);
+		 
+		 Object object = clz.newInstance();
+		 
+		 Car carObj = (Car) object;
+		 
+		 engField.set(carObj, new DieselEngine());
+		 
+		 carObj.drive();
+		 
+//		Car car2 = new Car(new PetrolEngine());
+//		car2.drive();
+	}
+}
+
+
+Note = we can use private varaible outside the class with the help of reflection api .
+
+
+===============
+IOC Container
+===============
+
+-> IOC stands for inversion of control .
+
+-> IOC is responsible for Dpendency injection in Spring application .
+
+-> Dependency Injection means creating and injecting dependent beans objects into target bean classes .
+
+Note : IOC container will manage life cycle of Spring Beans .
+
+Note : We need to provide " java classes + Bean Configuration " as input for IOC then IOC will perform DI and provides Spring Beans which are ready to use .
+ 
+=======================
+What is Spring Beans ?
+=======================
+
+->Any java class whose lifecycle( creation to destruction ) is managed by IOC is called as Spring Bean .
+
+-> We can represent java class as Spring in 2 ways 
+	
+	1. XML Approach
+	   Ex - <bean id="id1" class="pkg.ClassName"  />
+
+	2. Annotation Appraoch
+	   Ex - @Component , @Service, @repository etc....
+
+Note : In Spring we can use both XML & Annotation approaches. SpringBoot will support only Annotations (no xmls)
+
+
+==============================
+How to Start IOC in Spring ?
+==============================
+
+1. Bean Factory Interface
+2. ApplicationContext Interface (recommended)
+
+	Ex: ApplicatonContext = new ClassPathXmlApplicationContext(String configFile);
+
+Note : Bean Configuratoin file contains Bean Defitions
+	
+	(target class, dependent class, Dependency Injection type )
+
+Note: When Ioc container started it will read bean definitions from Bean Configuration file and it will perform dependency injection .
+
+
+=======================================================
+First Application Development using Spring Core Module
+========================================================
+
+1. Create Maven Project in IDE
+
+2. Add Spring Core Dependency in pom.xml
+
+3. Create Required java Class (Car, PetrolEngine, DieselEngine );
+
+4. Create Bean configuration files and configure Bean Definitions.
+
+     <!-- bean definitions here -->
+	
+	<bean id="petrolEng" class="in.learn.beans.PetrolEngine" ></bean>
+	
+	<bean id="dieselEng" class="in.learn.beans.DieselEngine" ></bean>
+	
+	<bean id="car" class="in.learn.beans.Car">
+		<property name="eng" ref="petrolEng"></property>
+	</bean>
+
+Note: Property tag represent setter injection
+
+5. Create Main class and start IOC container to test the application .
+
+
+	//Starting IOC Container 
+	ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		
+		Car car = context.getBean(Car.class); 
+		car.drive();
+
+--------------------------------------------------------------------------------------
+-> Bean Factory will follow lazy loading concept that means when we request the only it will create Bean Object .
+-> Application context will follow Eage rLoading for singleton Beans . For prototype beans it will follow lazy loading. 
+
+==================Note : Spring Bean defaut scope is singleton ====================
+
+
+Eager loading means creating objects for spring bean when Ioc starts .
+Lazy  loading means creating objects for spring bean when we call getBean() method.
+
+
+Note : Bean factory is depricated .
+
+In Spring framework we have below scopes .
+	
+	1. singleton
+	2. prototype
+	3. request
+	4. session
+
+-> singleton scope means only one object will be created for th eclass in IOC container .
+
+-> prototype scope means everytime newobject will be created .
+
+-> request and session are related to webmvc .
+
+
+================================================
+Why spring bean is by default Singleton ?
+================================================
+
+=> to save memory of JVM spring team made singleton as default scope for the spring beans .
+=>  EX . Rest Controller, Controller, Services and DAO will be considered as Singleton in the project .
+
+
+ex - TicketGenerator Class is used to generate new Ticket for every customer .
+	
+TicketGenerator ------> Singleton Bean 
+Ticket        --------> Prototype Bean
+
+
+============
+Autowiring
+============
+
+=> We can inject dependent bean into target bean in two ways 
+	1. Manual Wiring
+	2. Auto Wiring
+
+
+-> Manual wiring means : 
+	programmer will inject dependent object into target object using 
+	<property/> tag or <constructor-arg/> tag .
+
+
+-> Autowiring means : IOC container will identify dependent and it will inject into target object (we no need to use any ref attribute in bean configuration ) .
+	
+ 
+-> Autowiring will work based on below modes. 
+	1. byName
+	2. byType
+	3. constructor
+	4. no 
+
+Note : autowiring will not work by default , we have to enable autowiring on target bean like below .
+	<bean id="" class="" auto-wire=" byName| byType| constructor| no">
+
+
+=> byName means Ioc will identify dependent object based on bean id or bean name.
+	
+	<bean id="" class="" auto-wire="byName">
+
+
+
+============
+byType
+============
+
+=> byType means Ioc will identify dependent object based on the data type of the variable .
+
+=> If interface having more than one implementation than , 
+	we can use "autowire-candiate = true" to avoid the ambiguity problem. 
+
+		"autowire-candiate = true"  --  eligible for auto-wiring
+		"autowire-candiate = false" -- not eligible for auto-wiring
+
+
+============
+constructor
+============
+-> It is used to perform Autowiring by calling target class constructor .
+-> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

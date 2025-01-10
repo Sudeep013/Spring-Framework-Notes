@@ -1,0 +1,69 @@
+Project  = Business Logic + Common Login 
+
+Framework  provides Common Logic .
+Ex . Capture form data .
+     Validate data form .
+     Create Connection Pool .
+     DB Crud operation .
+
+Application Architecture 
+=========================
+
+project : Collection of Programs
+
+Project = FrontEnd  + Backend + Database
+
+ Backend = Web Layer(REST APIs) + Business Layer + Integration Layer + DAO Layer
+
+ Database = Persitent Store 
+
+Architecture 
+=============
+
+Monolith and Microservices architecture .
+
+
+
+================================================================================
+1. Spring Core : It is base module in the spring framework 
+
+   => Spring core module providing fundamental concepts of Spring Framework 
+
+	1) IOC Container
+	2) Dependency Injection
+	3) Bean Life Cycle
+	4) Bean Scopes
+	5) Autowiring 
+
+2. Spring Context : It will deal with configuration required for our Spring Application 
+
+3. Spring AOP : Aspect Oriented Programming 
+
+		=> Aop is used to separate business logic and Secondary Logic 
+		  ex : Security , Logging, Auditing, Exception Handling...
+		  
+
+   Note : if we combine businees logic and Secondary logic then it will be difficult to maintain .
+
+
+4. Spring JDBC : It is used to simplify database Communication logic.
+	> In java jdbc we need to write boiler plate code .
+	> Using SPring JDBC we can directly execute query the remaining part JDBC will take care
+
+5. Spring Web MVC : It is used to develop both Web Application & Distributed application 
+	> Web Application
+	> Distributed Application 
+
+
+5. Spring ORM (Object Relational Mapping)
+	=> Spring Framework Having integration with ORM frameworks
+	EX : Spring ORM, Spring DATA JPA
+
+6. Spring Security 
+	=> Using Spring Security we can implement Authentication & 		 Authorization .
+	=> Spring Security with OAuth2.0 
+
+7. Spring Batch : Batch means bulk operation 
+	=> It provide service registry to register all our microsevices.
+
+	
