@@ -1,0 +1,191 @@
+========================
+Spring Bean Life Cycle 
+========================
+
+=> Life cycle means starting to ending .
+	
+=> Spring Bean object creation and object destruction will be taken care by IOc conatiner .
+=> Spring Bean Life cycle will be managed by IOC cotainer.
+
+		init () ------- initialization logic.
+		destroy()--------> destruction logic
+
+=> Sprign Bean life cycle methods we can execute in 3 ways .
+
+	1. XML approach
+	2. Programatic approach
+	3. annotations
+
+=================Bean Life Cycle using XML appraoach=================
+
+	<bean id="motor" 
+	class="com.learn.beans.Motor" 
+	init-method="start" destroy-method="stop"
+	></bean>
+
+init-method ==> This attribute reprsent the method which should execute after bean obj created .
+
+destroy-method ==> This attribute represent the method which should called execute when obj removing from IOC .
+
+package com.learn.beans;
+
+public class Motor {
+	
+	public Motor() {
+		System.out.println("Motor : Constructor");
+	}
+	
+	public void start () {
+		System.out.println("Motor Started..............");
+	}
+	
+	public void work () {
+		System.out.println("Motor pulling water.........");
+	}
+
+	public void stop () {
+		System.out.println("Motor Stopped............");
+	}
+}
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- bean definitions here -->
+	<bean id="motor" 
+	class="com.learn.beans.Motor" 
+	init-method="start" destroy-method="stop"
+	></bean>
+	
+</beans>
+
+
+
+package com.learn.main;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.learn.beans.Motor;
+
+public class Main {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Bean.xml");
+		
+		Motor motor = context.getBean(Motor.class);
+		
+		motor.work();
+	}
+
+}
+
+
+=================Bean Life Cycle using Programmatic approach =================
+
+=> We need to impelement predefined interfaces 
+
+1. InitializingBean --> afterPropertiesSet()
+2. DisposableBean ---> destroy()
+
+package com.learn.beans;
+
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
+public class Motor2 implements InitializingBean, DisposableBean{
+	
+	public Motor2() {
+		System.out.println("Motor2 : Constructor");
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("Motor2 Started..............");
+	}
+	
+	public void work () {
+		System.out.println("Motor2 pulling water.........");
+	}
+	
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("Motor2 Stopped............");
+	}
+}
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- bean definitions here -->
+	<bean id="motor" 
+	class="com.learn.beans.Motor" 
+	init-method="start" destroy-method="stop"
+	></bean>
+	
+	<bean id="motor2" 
+	class="com.learn.beans.Motor2" 
+	></bean>
+	
+</beans>
+
+
+
+package com.learn.main;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.learn.beans.Motor;
+import com.learn.beans.Motor2;
+
+public class Main {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Bean.xml");
+		
+		//Motor motor = context.getBean(Motor.class);
+		Motor2 motor2 = context.getBean(Motor2.class);
+		
+		motor2.work();
+	}
+
+}
+ 
+===================LifeCycle using Annotation approach =========================
+
+@PostConstruct --> it represent init method
+
+
+@PreDestroy --> it represent destroy method
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
