@@ -1,0 +1,159 @@
+============
+Spring Boot
+============
+
+=> SpringBoot is one apporoach to develop Spring Based application less configuration .
+
+	Spring Boot = SpringFramework - XML configuration
+
+=> Spring is not replacement for spring framework. Boot developed on top of Spring Framework .
+
+Note : all spring framework concepts can be used in spring Boot also .
+
+===========================
+Advantages of Spring Boot
+===========================
+
+1. Less Configuration
+
+2. Pom Starters .
+
+	Ex: web-starter, jpa-starter, security-starter, mail-starter.
+
+3. AutoConfiguration .
+
+4. Embedded Server (Ex: Tomcat, Jetty, Netty)
+
+5. Actuators( production Ready features )
+
+
+Spring Boot Application Folder Structure
+=========================================
+
+src/main/java : To keep our source code
+	
+	- Application.java : It is start class of the Spring boot(main class)
+
+src/main/resources : To keep project configuration files 
+
+	- application.properties/yml
+
+src/test/java : to keep junit code( Unit testing )
+
+	- ApplicationTest.java
+
+src/test/resources : Unit testing related config files goes here .
+
+Maven Dependencies : Downloaded jars will be available here .
+
+pom.xml : Maven configuration file( dependencies ).
+
+
+
+=======================
+Spring Boot Start Class
+=======================
+
+package in.learn;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+}
+
+
+=> It is entrypoint for spring boot application execution .
+
+=> @SpringBootApplication is equal to below 3 annotation .
+	
+	@SpringBootConfiguration
+	@EnableAutoConfiguration
+	@COmponentScan
+
+
+=> Spring Boot start class will act as configuration class because of @SpringBootConfiguration annotation
+
+=> In spring boot applicataion auto configuration feature will be available of @EnableAutoConfiguration annotation.
+
+=> Component Scan will be performed in spring boot because of @ComponentScan annotation . 
+
+
+==========================================
+What is SpringApplication.run() method
+==========================================
+
+=> Spring Boot start class main() method will call SpringApplication.run() method.
+
+=> SpringApplication.run() is entry point for boot application execution. This run() method will return refernece of IOC
+
+
+==========================
+Runners in spring boot
+==========================
+
+=>Runners are used to execute the logic only once when application got started .
+
+=> SpringApplication.run() method will call runners .
+
+=> In Spring Boot we have 2 types of runners .
+
+	1. Application Runner 
+	2. CommandLine Runner
+
+=> Runner is used to fetch data from the database and store it in the cache .
+
+=> pre requisiting :
+   ================
+
+ 1. Json 
+ 2. java restful services
+ 3. Spring Core, Spring Boot
+
+
+jdk 8 stream api - https://www.youtube.com/watch?v=TiCFAfzt9TY
+
+
+
+==========================
+properties and yaml files 
+==========================
+
+=>properties file is used to configure properties in linear structure 
+
+	Ex: server.port = 8080
+
+=>YML file is used to configure properties in hieraricahl structure 
+
+	EX : server :
+		  port : 8080
+
+
+
+=> In properties , for every profile separate properties file should be created .
+
+	application_dev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
