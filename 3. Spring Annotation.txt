@@ -1,0 +1,51 @@
+Spring Annotation 
+===================
+
+Annotation ====> Represent Metadata
+
+=>Introduced in java 1.5
+
+=>Annotations are alternate for XMl Configurations .
+
+=>In spring Framework we have several annotation
+
+1. @Configuartion : TO represent java class as Configuraton class .
+
+2. @ComponentScan : TO identify Spring Bean classes available in the project based on "basePackage".
+
+3. @Component : To represent java class as Sprign Bean .
+
+4. @Service : To represent java class as Sprign Bean (Business layer classes).
+
+5. @Repository : To represent java class as Sprign Bean (Persistence layer classes) .
+
+6. @Scope : To represent Bean scope.
+
+7. @Autowired : To perform dependency injection.
+
+8. @Qualifier : TO perform autowiring based on byName.
+
+9. @Primary : TO represent primary bean for Autowiring .
+
+10. @Bean : TO call the method which returns bean object .
+
+
+
+(basePackage = {"com.learn"} )
+
+	com.learn.beans -------> will be scanned.
+
+	com.learn.utils -------> will be scanned.
+
+	com.learn.services -------> will be scanned.
+
+	in.learn.eamil   ----------> will not be scanned.
+
+
+
+
+
+
+
+
+
