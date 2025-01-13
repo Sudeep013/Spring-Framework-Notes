@@ -1,0 +1,271 @@
+1> What is Spring Web MVC ?
+
+2> Advantages of Spring Web Mvc ?
+
+3> Spring Web MVC Architecture 
+
+	- DispatcherServlet
+	- HandleMapper
+	- Controller
+	- ModelAndView
+	- ViewResolver
+	- View
+
+4>What is Embedded Server ?
+
+5> Building web Application using Spring Boot ?
+
+6> What is @Controller ?
+
+7> What is @GetMapping & @PostMapping ?
+
+8> What is Query params and how to work with them ? @resquestParam
+
+9> What is Path Params and how to work with them ? @PathVariable
+
+10> Form based application development ?
+
+11> Spring web MVC form tag library ?
+
+12> What is Thymeleaf ?
+
+13> Form Validation ?
+
+14> What is @ResponseBody annotation ?
+
+15> How to make jetty as default embedded server ?
+
+16> How to configure H2 Database ? Embedded database 
+
+17> Web app development using => Web MVC + Data Jpa + h2 DB
+
+
+========================
+Spring Web MVC
+========================
+
+-> It is one module available in Spring Framework 
+
+-> Spring Web MVC is used to develop 2 types of application .
+
+	1) Web Application
+	
+	   EX : Gmail, facebook, naukri
+
+	2) Distributed Appliacation
+
+	   Ex : MakeMyTrip ---------->Irctc
+
+-> Web & Distributed application development made easy .
+
+-> Form Data Binding TO java objects .
+
+-> Flexibility in form binding .(Type casting will be done )
+
+-> Form Validation (Server validation)
+
+-> Supports for multiple presentation technology .
+
+-> Embedded Servers (Default: Tomcat )
+
+================================
+Spring MVC Architecture 
+================================
+
+1) Dispatcher Servlet : It acts as a front controller
+
+2) HandlerMapper : It will identify which request should be processed by which controller and which method
+
+3) Controller : It will handle request and decided response to send using MOdelAndView .
+
+4) ModelandView : Model represent data in key-value format. View represent logical file name to display .
+
+5) View Resolver : It is used to identify physical location of view files .
+
+6) View : It is used to render model data on the view file .
+
+
+==============================
+Building first Spring Web MVC Application
+============================================
+
+1) Create Spring Boot application with below dependencies 
+
+	a. spring-boot-starter-web
+	b. tomcat-embed-jasper
+	c. spring-boot-devtools
+
+2) Create Contoller class using @Controller annotation
+
+3) Write required methods in Controller class and bind them to Http Request Methods
+
+4) Create Presentation file (JSP) with presentation logic .
+
+5) Configure View Resolver in application.properties file
+
+6) Run the application and test it .
+
+
+
+
+<!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
+<dependency>
+    <groupId>org.apache.tomcat.embed</groupId>
+    <artifactId>tomcat-embed-jasper</artifactId>
+</dependency>
+
+
+What is context-path ?
+=======================
+=> Project Name we can use as context path .
+
+adding context-path in properties file
+======================================
+server.servlet.context-path=/webapp
+
+spring.mvc.view.prefix = /views/
+spring.mvc.view.suffix = .jsp
+
+server.port = 9090
+
+servlet.servlet.context-path = /WebApp
+
+1) DispatcherServlet 
+2) HandlerMapper
+3) Controller
+4) ModelAndView
+5) ViewResolver
+6) View 
+
+=> Client can send data to servers in below 3 ways 
+
+1) Query Parameters
+2) Path parameters
+3) Request Body
+
+
+Query parameters 
+==================
+
+=> Query Params are used to send data from client to server in URL .
+
+=> Query params are also called as Request Parameters .
+
+=> Query Parameters will represent data in key value format .
+
+=> Query Parameters should present only at the end of the url .
+
+=> Query Paramets will start '?' symbol 
+
+=> Query parameters will bw separated by '&' symbol
+
+=> TO read Query Parameters in Spring Controller we will use @RequestParam annotation .
+
+
+Path Parameters / URI parameters
+=================================
+
+=> Path parameter are used to send data from client to server in URL .
+
+=> Path parameters are also called as URI parmeters .
+
+=>  Path parameter will represent data directly (without keys)
+
+	Ex : www.ashokit.in/course/{cname}/trainer/{tname}
+
+=> Path parameters can present anywhere in the URL .
+
+=> To read query we will use 
+
+
+
+Second Approach to call 
+========================
+
+@GetMapping("/greet")
+public String getGreetMsg(@RequestParam String name, Model model) {
+	
+	model.addAttribute("msg", name);
+
+	return "index";
+
+}
+
+note: method return type is string 
+
+
+
+
+==================
+Forms Development 
+==================
+
+=> Form are used to collect data from user to perform business operation .
+
+
+
+
+1) Create spring boot application with below dependencies 
+
+	1) web-starter
+	2) datajpa-starter
+	3) h2
+	4) devtools
+	5) jstl
+	6) tomcat-embeed-jasper
+
+2) Create entity class and repository interface to store the data .
+
+3) Create Controller class to handle request and response .
+
+4) Create view file usign JSP
+
+5) Configure below properties in application.properties / yml file .
+
+6) Run the application and test it . 
+
+
+
+
+<!-- https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api -->
+<dependency>
+    <groupId>jakarta.servlet.jsp.jstl</groupId>
+    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+</dependency>
+
+
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+</dependency>
+
+
+
+
+====================================================================================
+
+To use form tag library we have to use given directive - 
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
