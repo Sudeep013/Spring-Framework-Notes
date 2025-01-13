@@ -1,0 +1,486 @@
+1. What is Spring Data Jpa ?
+
+2. Hibernate VS Data JPA ?
+
+3. Spring Data Jpa repositories ?
+
+4. What is Entity ?
+
+5. Annotattions to Map java class to DB table 
+
+6. How to Develop application using Data JPA 
+
+7. CrudRepository methods 
+
+8. JpaRepository Methods 
+
+9. CrudRepository vs Jpa Repository 
+
+10. What is pagination ?
+
+11. Sorting
+
+12. Query By example
+
+13. Working with findByxxx methods 
+
+14. Custom Queries usign @Query (@Modifying, @Transactional)
+
+15 HQL vs SQL
+
+16 What is Dialect ?
+
+17. Calling Stored Procedures 
+
+18. Timestamping 
+
+19. SoftDelete vs Hard Delete 
+
+20. Primary Key
+
+21. Generators
+
+22. Composite primary key(@Embeddeble, @Embeddedld)
+
+23. Connection Pooling ( Hikari CP )
+
+24. Spring Boot profiles
+
+25. How to develop Custom generators . (Spring boot profile video ASHOK IT )
+-------------------------------------------------------------------------------------
+======================
+Spring Data JPA
+======================
+
+=> application contains several layers 
+
+	1) Presentation layer( JSP /Thymleaf /Angular /react / vue )
+
+	2) Web Layer ( Servlets / struts / Spring Web MVC )
+
+	3) persistance layer ( JDBC / Spring JDBC/ Spring ORM / Spring Data JPA )
+
+=> Spring Data JPA is used to develop Persistance layer in the application .
+
+=> Spring Data JPA providing ready made methods to peform CRUD operation in the DB table .
+
+=> Spring Data JPA providing ready made methods using interface like below . 
+
+
+  1) CrudRepository
+
+  2) JpaRepository
+
+	NOte : JpaRepository = CrudRepository + Pagination Methods + Sorting methods 
+
+==============================
+Spring data JPA terminology 
+==============================
+
+1) Data Source Object : It represent database connection .
+======================
+
+Note : Data Source properties we can configure in application.properties or application.yml i.e it represent with which database we want to connect .
+
+2) Entity Class : The class which is mapped with database table .
+   ============
+	
+	@Entity
+	@Table
+	@Id
+	@Column 
+
+	STUDENT_TBL => Student_ID, Student_Name, Student_Rank, Student_Gender
+
+	@Entity
+	@Table(name="STUDENT_TBL")
+	class Student {
+		@Id
+		@Column(name="Student_ID")
+		int id ;
+
+		@Column(name="Student Name")
+		String name ;
+
+		@Column(name="Student Rank ")
+		long rank ;
+
+		@Column(name="")
+		String gender ;
+
+		}
+
+3)  Repository interface : For Table we will create on repository interface to perform 	 =========================  Crud Operation .
+
+public interface StudentRepository extends CrudRepository<Student, Integer> {
+	
+}
+
+
+Note : By using StudentRepository we can perform CRUD operations in STUDENT_TBL
+
+	
+4) Repository Methods : Ready made methods provided by Data JPA to CRUD operations .
+=======================
+
+1) save(Entity) : save method as a 
+
+2) saveall(Iterable<Entity> i)
+
+Note : Above two mwthods are called as "UPSERT" methods .
+
+3) findById(ID id)
+
+4) findAllById(Iterable<ID> ids)
+
+5) findAll()
+
+6) count()
+
+7) existById(ID id)
+
+8) deleteById(ID id)
+
+9) deleteAllById(Iterable<ID> ids )
+
+10) deleteAll()
+
+
+
+5) ORM Properties  = TO automate some configuration .
+==================
+
+1) auto_ddl : Dynamic schema generation .
+
+2) show_sql : Display generated queries on the console .
+
+
+=========================================================================================
+
+First Application development using Spring data JPA
+
+1) Create Spring Starter Project with below dependencies 
+
+	a) springboot-starter-data-jpa
+	b) mysql-connector 
+
+2) Create entity class and map with DB table using annotationss
+
+3) Create Repository interface to perform CRUD operation .
+
+4) Configure Data Source properties in application.yml file
+
+5) Run the application and test the functionality .
+
+ 
+Note :  DataJpa uses hikari connection pool .
+
+Data jpa will implement the Repository interface created by the user 
+
+
+Retrieve the record based on differnt properties 
+--------------------------------------------------
+
+=> By using findByXXX() metod we can retrieve the data based on non-primary key columns also .
+
+=> When we write findByXXX method , JPA will construct based on method name 
+
+=>using findBy method we can perform only select operations . 
+
+=> These method should be declared inside the repository Interface, you dont have to give definations of these methods , the body of the method will be created automatically according to the name of method . what ever is written after the findByXXX keyword will be used after where clause . 
+
+public List<Student> findByGender (String gender);
+
+public List<Student> findByGenderIsNull();
+
+public List<Student> findByRankGreaterThanEqal(Long rank);
+
+public List<Student> findByRankLessThanEqaul(Long rank);
+
+public List<Student> findByGenderAndRankGreaterThanEqaul(String gender, Long rank);
+
+=========================================================================================
+
+Custom Queries 
+===============
+
+=> we can execute custom queries also in jpa ;
+
+=> To execute custom queries we will use @Query annotation 
+
+=> @Query will support for executing both HQL and Native SQL queries also .
+
+	HQL : Hibernate Query language (Database Independent Queries )
+
+		=> In HQL, we will use Entity class name @ Entity class variable to write 		   query.
+		=> HQL queries will be converted to SQL queries by Dialect class for 			   execution.	
+		=> If we change from one DB to another then no need to change any query 
+		    because Dialect class will take care of query conversion .
+
+	SQL : Structured Query language (database Dependent queries )
+
+		=> In sql we will use table name & column name to write the query .
+
+		=> SQl queries will directly execute in database.
+
+		=> If we change app from one DB to another DB then all queries may not 			   execute. 
+
+====================================================================================
+
+Repository with custom queries 
+------------------------------
+
+@Query(value=" select * from student_dtls ",)
+
+
+
+
+=======================================================================================
+
+Queries in HQL 
+--------------
+
+> from Student where gender = gender 
+
+> from Student gender is null
+
+> from Student where srank >= rank
+
+> from Student where gender = gender and srank >= srank;
+
+
+===================================================================
+
+Selection : Retrieving specific rows from table . 
+
+Projection : Retreving specific columns from the table is called Projection .
+
+ 
+Note : For pagination we have to set page size i.e how many records one page will contain .
+
+
+================
+Query By Example 
+================
+
+> QBE is used to generate data dynamically .
+
+Student s = new Student();
+
+s.getGender("Male");
+
+Example<Student> example = Example.of(s);
+
+==============================================================================
+
+> if we want to perform Non Select operations(DML operations ) using Data Jpa we have to use two more annotation at our method .
+
+1. @Modifying - This method is performing DMl operation .
+2. @Transactional- This method required to communicate with data jpa .
+
+Note : The above annotation are not required for selection operation 
+
+
+
+@Query("delete from student where id = :id")
+@Modifying
+@Transactional
+public void deleteStudent(Integer sid);
+
+
+@Query("update Student set gender = :gender where id = :sid")
+@Modifying
+@Transactional
+public void updateStudent(Integer sid, String gender );
+
+
+Note : Inserting a record into table with HQL is not possible , we have to write native query .
+
+@Query("insert into student_dtls(sid,sname,sgender) values(:id, :name, :gender)", nativeQuery=true)
+@Modifying
+@Transactional
+public void insertStudent(Integer sid, String name, String gender);
+
+
+
+==============================
+Timestamping in Data Jpa
+==============================
+
+=> @CreationTimestamp = It is used to populate record inserted date into DB column .
+
+	@CreationTimestamp
+	@Column(name = "CREATED_DAte")
+	private Localdate createDate;
+
+=> @UpdateTimestamp = It is used to populate record updated date into DB column.
+
+	@UpdationTimestamp
+	@Column(name = "UPDATED_DAte")
+	private Localdate updateDate;
+
+
+Note : Generate setters and getters for the data members ;
+
+
+
+==================================
+Soft and Hard Delete 
+==================================
+
+=> Hard delete means deleting record from DB permanently using "Delete" Query .
+
+=> Soft delete means updating the record as IN-active. 
+
+	Ex : Active / De-Activate
+
+
+==========================================
+Primary Key and Composite primary key 
+==========================================
+
+=> Primary key is a constraint to maintain unique record in the table 
+
+	Primary key = UNiQUE + Not Null
+
+=> If we try to insert duplicate value in PK column value then we will get UniqueConstraintException 
+
+=> We shouldnt ask end users to enter value for PK column because users may enter duplicate value .
+
+=> To generate value for PK column we will use generators .
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
+===============My SQL============
+
+=> In MySql DB ===> Auto/Sequence/Table ====> Behaviour is same 
+
+=> Identity ====> Will use AUTO_INCREMENT to generate for primary key .
+
+
+============================
+Composite Primary Key 
+============================
+
+-> if a table contains more than one PK column then it is called Composite primary keys .
+
+create table product (
+	product_id integer not null
+)
+
+-> WHen we have composite pks then the combination PK Should not be repeated .
+
+
+--> we cant use generators for composite primary key .
+
+===============================
+Connection Pooling in Data Jpa 
+===============================
+
+-> Connection pooling is used to maintain connections required for our applications .
+
+=>Getting connection from DB directly is not recommended because it will degrade our application .
+
+=>We need to create connection pool to store connections when our application starts.
+
+=>TO perform Db operations we need to get connection from connection pool instead of getting from DB .
+
+=> using connection pool we can improve performance of the application .
+
+	hikari:
+	   maximum-pool-size: 20
+
+
+=================================
+Working With stored procedures 
+=================================
+
+=> procedure means set of sql queries .
+
+=> procedures are used to write business logic at database side .
+
+=> Procedures are used to improve performance of the application .
+
+-------Procedure to retrieve data from the product table---------------
+
+DELIMITER $$
+Create PROCEDURE getProducts()
+BEGIN
+    SELECT * FROM PRODUCT;
+END$$
+DELIMETER ;
+
+
+call getProducts();
+
+
+--------- calling procedures using jpa repository-------------------
+
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+	
+	@Query(value="call getProducts()",nativeQuery=true)
+	public List<Product> getAllProducts();
+
+}
+
+
+===============================================
+Associate Mapping / Relationships in DB tables 
+===============================================
+
+=> we can divide DB side relations into 4 types 
+
+1. ONE to ONE ( One Person will have one Passport)
+
+2. One to Many (One Employee will have Multiple Address )
+
+3. Many to One ( Multiple Books belong to one Author )
+
+4. Many to Many ( Multiple users having Multiple roles in  )
+
+
+=> When DB tables are having Relation then we need to represent that relation in our Entity classes also 
+
+=> The process of representing DB tables relations in entity classess is called as association Mapping .
+
+Cascade Type : Default type is NONE : It represents operaations on parent record should reflect on child record or not .
+
+Fetch type : Default type is LAZY : It represent weather load child record along with parent or not .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
