@@ -1,0 +1,80 @@
+==========
+Thymleaf 
+==========
+
+=> Thymleaf we can use as presentation technology in spring web MVC based technology.
+
+=> Thymleaf is an alternate of JSP.
+
+=> JSP cannot be executed directly. JSp page should be converted into servlet .
+
+=> Thymeleaf is a template engine which can be used in html page directly .
+
+=> HTML + Thymeleaf  = Dynamic web pages 
+
+=> Thymeleaf pages are faster than jsp pages .
+
+=> To use thymeleaf in boot applications we need to add below starter
+
+	'spring-boot-starter-thymeleaf' 
+
+================================================================================
+
+Application DEvelopment with thymeleaf 
+=======================================
+
+1) Create boot app with below dependencies 
+
+	a) web-starter
+	b) thymeleaf-starter
+	c) devtools
+
+2) Create Sprign controller with Required methods .
+
+3)Create Thymeleaf teplates under src/main/resources folder
+
+4) Run the application and test it.
+
+
+=========================================================================================
+@NotNull Annotation can be used for form validation
+
+@NotNull - values cant be null .
+
+
+========================================================
+How to configure jetty as embedded seerver 
+========================================================
+
+1. Exclude the spring-boot-starter-tomcat with the help of exclsuion tag
+
+2.  Add jetty-starter in pom.xml file 
+
+ 
+<Exclusions>
+    <Exclusion>
+	
+    <Exclusion>
+<Exclusions>
+
+
+
+@ResponseBody annotation - 
+==========================
+
+> When ever spring controller returns string it consider a view page .
+
+> To return data directly to the web page we use @ResponseBody .
+
+
+Note : @Controller + @ResponseBody = @RestControllers 
+
+
+
+
+
+
+
+
+
+
